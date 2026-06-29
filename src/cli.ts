@@ -4,6 +4,7 @@
 
 import { Command } from 'commander';
 import { readFileSync } from 'node:fs';
+import { createRequire } from 'node:module';
 import { decodeInvoice } from './decoder.js';
 import { prettyPrint, printJson } from './formatter.js';
 import type { DecodedInvoice } from './types.js';
@@ -12,7 +13,8 @@ import type { DecodedInvoice } from './types.js';
 // Helpers
 // ---------------------------------------------------------------------------
 
-const { version } = { version: '1.0.0' };
+const require = createRequire(import.meta.url);
+const { version } = require('../package.json');
 
 /**
  * Read invoice string from argument, file, or stdin.

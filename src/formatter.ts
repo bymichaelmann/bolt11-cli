@@ -164,6 +164,7 @@ export function printJson(invoice: DecodedInvoice): void {
     fallbackAddresses: invoice.fallbackAddresses,
     routeHints: invoice.routeHints,
     minFinalCltvExpiry: invoice.minFinalCltvExpiry,
+    featureBits: invoice.featureBits,
     expired: invoice.expired,
     expiryDeltaSeconds: invoice.expiryDeltaSeconds,
     expiryDescription: invoice.expiryDescription,

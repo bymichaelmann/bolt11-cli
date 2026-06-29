@@ -3,3 +3,10 @@ dist/
 coverage/
 .env
 *.log
+build/
+out/
+target/
+artifacts/
+cache/
+.cache/
+__pycache__/

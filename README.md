@@ -2,7 +2,7 @@
 
 **Decode and validate Bitcoin Lightning Network BOLT11 payment invoices from the command line.**
 
-`bolt11-cli` is a fast, typed CLI tool for parsing, displaying, and validating BOLT11 Lightning invoices (`lnbc…`, `lntb…`). It decodes every field, verifies the cryptographic signature, checks expiry, and outputs either a colorful terminal view or structured JSON.
+`bolt11-cli` is a fast, typed CLI tool for parsing, displaying, and validating BOLT11 Lightning invoices (`lnbc…`, `lntb…`). It decodes every field, checks signature validity via the bolt11 library, checks expiry, and outputs either a colorful terminal view or structured JSON.
 
 ---
 
@@ -36,8 +36,6 @@ bolt11 --file invoice.txt                                      # read from file
 
 ### Pretty-print
 
-![screenshot](docs/screenshot.png)
-
 The default output shows all fields with emojis, colored sections, and alignment:
 
 ```
@@ -61,7 +59,7 @@ The default output shows all fields with emojis, colored sections, and alignment
  …
 ```
 
-Expired invoices are shown in red/amber. Valid signatures are marked with a green ✓.
+Expired invoices are shown in red/amber. Signature status is shown with a green checkmark when valid.
 
 ### JSON output
 
@@ -114,7 +112,7 @@ bolt11 --version
 ## Features
 
 - **Full BOLT11 decoding** — HRP, amount (msat/sat/BTC), currency, timestamp, payment hash, description / description hash, expiry, payee node key, fallback addresses, route hints (compact format), min_final_cltv_expiry, feature bits
-- **Signature verification** — recovers the public key and validates the signed payload
+- **Signature verification** — checks the library's internal verification result and reports validity
 - **Expiry checking** — shows remaining time, red status for expired invoices, exit code 2
 - **Colorful TUI** — chalk-based sections, emojis, alignment
 - **JSON mode** — `--json` for piping to `jq` or other tools

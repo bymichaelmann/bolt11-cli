@@ -3,7 +3,6 @@
  */
 
 import bolt11 from 'bolt11';
-import { createHash } from 'node:crypto';
 import type { PaymentRequestObject, TagsObject, RoutingInfo } from 'bolt11';
 import type {
   DecodedInvoice,
@@ -91,14 +90,12 @@ function parseFallbackAddresses(tags: TagsObject): FallbackAddress[] {
 // ---------------------------------------------------------------------------
 
 /**
- * Verify the BOLT11 signature by recovering the public key and comparing to
- * the signed payload. Returns true/false/null (null = can't verify).
+ * Check BOLT11 signature validity by delegating to the bolt11 library.
+ * Returns true/false/null (null = can't verify).
  *
- * We reconstruct the signed message (the tagged fields hashed with SHA256)
- * and use the recovery flag + signature to recover the public key.
- *
- * Note: The bolt11 library already verifies this internally (`complete` field),
- * but we do an independent check for transparency.
+ * The bolt11 library internally verifies signature validity and exposes the
+ * result via its `complete` field. This function reads that field — it does
+ * not independently re-derive the public key.
  */
 function verifySignature(decoded: PaymentRequestObject): boolean | null {
   if (!decoded.signature || decoded.recoveryFlag === undefined) {
@@ -106,9 +103,6 @@ function verifySignature(decoded: PaymentRequestObject): boolean | null {
   }
 
   try {
-    // The bolt11 library provides a `complete` field that indicates successful
-    // signature verification. We rely on it as the authoritative check since
-    // the library handles all the ECDSA recovery math internally.
     if (decoded.complete === undefined) return null;
     return decoded.complete === true;
   } catch {
