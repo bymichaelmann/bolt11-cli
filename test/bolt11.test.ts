@@ -99,8 +99,8 @@ describe('decodeInvoice', () => {
     expect(result.description).toBe('Payment for services');
     expect(result.paymentHash).toBe('0001020304050607080900010203040506070809000102030405060708090102');
     expect(result.signature).toBeTruthy();
-    expect(typeof result.signatureValid).toBe('boolean');
-    // Timestamp should be 1700000000
+    // Valid signature with matching n-tag
+    expect(result.signatureValid).toBe(true);
     expect(result.timestamp).toBe(1700000000);
 
     // This is signed, so it should be valid (complete: true)

@@ -82,8 +82,54 @@ export interface DecodedInvoice {
   expiryDeltaSeconds: number;
   /** Human-readable expiry description */
   expiryDescription: string;
-  /** Whether signature is valid (null if cannot verify) */
-  signatureValid: boolean | null;
+  /**
+   * Signature status.
+   * - `true`:   `payee_node_key` (`n`) tag present and recovered key matches it
+   * - `false`:  `n` tag present but recovered key does NOT match
+   * - `"unverified"`: no `n` tag – recovery succeeded but no key to compare against
+   * - `null`:   recovery failed (no signature / invalid data)
+   */
+  signatureValid: boolean | 'unverified' | null;
+  /** Public key recovered from the signature (33-byte compressed hex) - available when signature recovery succeeds */
+  recoveredPayeeNodeKey?: string;
+}
+
+/** Severity level for audit findings */
+export type FindingSeverity = 'INFO' | 'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL';
+
+/** A single audit finding */
+export interface AuditFinding {
+  category: 'privacy' | 'security' | 'info';
+  severity: FindingSeverity;
+  title: string;
+  detail: string;
+}
+
+/** Result of an invoice audit */
+export interface AuditResult {
+  findings: AuditFinding[];
+  riskLevel: FindingSeverity;
+  summary: {
+    privacy: number;
+    security: number;
+    info: number;
+  };
+}
+
+/** Whois lookup result */
+export interface WhoisResult {
+  /** The recovered payee pubkey */
+  recoveredKey: string;
+  /** The explicit payeeNodeKey from the `n` tag (if present) */
+  payeeNodeKey?: string;
+  /** Matched node info (if found in known-nodes) */
+  node?: { alias: string; type: string };
+  /** LSP node info from route hints (if route hints present) */
+  lsp?: { pubkey: string; alias: string; type: string };
+  /** Whether the payee appears to be behind an LSP */
+  behindLsp: boolean;
+  /** Human-readable classification */
+  classification: string;
 }
 
 /** Options for display */
