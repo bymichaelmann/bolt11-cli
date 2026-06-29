@@ -63,7 +63,7 @@ function readStdin(): Promise<string> {
 /**
  * Perform a whois lookup on a decoded invoice.
  */
-function whoisInvoice(invoice: DecodedInvoice, invoiceStr: string): WhoisResult {
+export function whoisInvoice(invoice: DecodedInvoice, invoiceStr: string): WhoisResult {
   const recoveredKey = recoverPubkey(invoiceStr) ?? invoice.recoveredPayeeNodeKey ?? '';
   const payeeNodeKey = invoice.payeeNodeKey;
 
@@ -120,7 +120,7 @@ function whoisInvoice(invoice: DecodedInvoice, invoiceStr: string): WhoisResult 
 /**
  * Determine the highest severity from a list of findings.
  */
-function highestSeverity(findings: AuditFinding[]): FindingSeverity {
+export function highestSeverity(findings: AuditFinding[]): FindingSeverity {
   const order: FindingSeverity[] = ['INFO', 'LOW', 'MEDIUM', 'HIGH', 'CRITICAL'];
   let maxIdx = 0;
   for (const f of findings) {
@@ -133,7 +133,7 @@ function highestSeverity(findings: AuditFinding[]): FindingSeverity {
 /**
  * Perform a structured privacy + security audit on a decoded invoice.
  */
-function auditInvoice(invoice: DecodedInvoice, invoiceStr: string): AuditResult {
+export function auditInvoice(invoice: DecodedInvoice, invoiceStr: string): AuditResult {
   const findings: AuditFinding[] = [];
 
   // -- Privacy checks --
