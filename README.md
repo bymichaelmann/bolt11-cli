@@ -15,7 +15,7 @@ npm install -g bolt11-cli
 Or run directly from source:
 
 ```bash
-git clone https://github.com/michaelmann/bolt11-cli.git
+git clone https://github.com/bymichaelmann/bolt11-cli.git
 cd bolt11-cli
 npm install && npm run build
 node bin/bolt11.js
